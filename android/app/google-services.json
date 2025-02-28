@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "68673754284",
+    "project_id": "sharemind-f7c1d",
+    "storage_bucket": "sharemind-f7c1d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68673754284:android:19e49315863aa9951a7b09",
+        "android_client_info": {
+          "package_name": "com.example.huang_box_manager_web"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68673754284-ikng2jrso2eut4behfp5grlklaimjdn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHAuUtRNN9AGpKyeXayawW5oENR6UMNZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68673754284-ikng2jrso2eut4behfp5grlklaimjdn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
