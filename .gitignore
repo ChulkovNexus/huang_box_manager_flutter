@@ -112,3 +112,5 @@ web/manifest.json
 !.env.example
 *.log
 *.cache
+
+**/*.chopper.dart
