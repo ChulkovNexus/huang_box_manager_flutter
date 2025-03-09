@@ -34,10 +34,6 @@ class MainPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Main Page'),
-            // On mobile, Scaffold automatically adds a hamburger icon if drawer is present
-            // automaticallyImplyLeading: ResponsiveBreakpoints.of(
-            //   buildContext,
-            // ).largerThan(MOBILE),
             automaticallyImplyLeading: true,
           ),
           drawer:
