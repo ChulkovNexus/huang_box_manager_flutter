@@ -9,7 +9,7 @@ import '../main.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FlavorConfig(name: "PROD", variables: {"baseUrl": "http://bober.app:5050"});
+  FlavorConfig(name: "PROD", variables: {"baseUrl": "https://bober.app:5050"});
   usePathUrlStrategy();
   // Инициализация DI
   setupDependencies();
