@@ -26,7 +26,7 @@ class ThemeCubit extends Cubit<ThemeData> {
       onError: Colors.grey,
       primary: Colors.blue,
       onSecondary: Colors.blue,
-      surface: Colors.blue,
+      surface: Colors.white,
     ),
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: TextStyle(color: Colors.black),
