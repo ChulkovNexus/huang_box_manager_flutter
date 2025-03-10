@@ -1,0 +1,14 @@
+{
+  "addInference": "Добавить инференс",
+  "myInferences": "Мои инференсы",
+  "create": "Создать",
+  "output_token_price": "Цена за 1м исходящих токенов",
+  "input_token_price": "Цена за 1м входящих токенов",
+  "select_inference": "Выберите llm",
+  "great": "Отлично!",
+  "inference_name": "Название",
+  "inference_input_price": "Цена за 1м входящих токенов",
+  "inference_outout_price": "Цена за 1м исходящих токенов",
+  "inference_created_at": "Создан",
+  "inferenceCreated": "Inference created"
+}

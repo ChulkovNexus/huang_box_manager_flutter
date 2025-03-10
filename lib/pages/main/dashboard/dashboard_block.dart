@@ -1,7 +1,0 @@
-// Placeholder BLoC and State
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huang_box_manager_web/pages/main/dashboard/dashboard_state.dart';
-
-class DashboardBloc extends Cubit<DashboardState> {
-  DashboardBloc() : super(const DashboardInitialState());
-}

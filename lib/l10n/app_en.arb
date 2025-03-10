@@ -1,0 +1,14 @@
+{
+  "addInference": "Add inference",
+  "myInferences": "My inferences",
+  "create": "Create",
+  "output_token_price": "Output Token Price (per 1M)",
+  "input_token_price": "Input Token Price (per 1M)",
+  "inferenceCreated": "Inference created",
+  "great": "Great!",
+  "inference_name": "Name",
+  "inference_input_price": "Input Price",
+  "inference_outout_price": "Output Price",
+  "inference_created_at": "Created At",
+  "select_inference": "Select inference"
+}

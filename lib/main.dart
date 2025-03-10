@@ -7,6 +7,7 @@ import 'package:huang_box_manager_web/pages/main/main_page.dart';
 import 'package:huang_box_manager_web/themes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClientApp extends StatelessWidget {
   ClientApp({super.key});
@@ -14,17 +15,9 @@ class ClientApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
       // Главная страница
-      GoRoute(
-        path: '/',
-        name: 'home',
-        builder: (context, state) => const HomePage(),
-      ),
+      GoRoute(path: '/', name: 'home', builder: (context, state) => const HomePage()),
       // Страница авторизации
-      GoRoute(
-        path: '/auth',
-        name: 'auth',
-        builder: (context, state) => AuthPage(),
-      ),
+      GoRoute(path: '/auth', name: 'auth', builder: (context, state) => AuthPage()),
       GoRoute(
         path: '/main',
         builder: (context, state) => const MainPage(), // Новая страница
@@ -39,8 +32,13 @@ class ClientApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, ThemeData>(
         builder: (_, theme) {
           return MaterialApp.router(
-            localizationsDelegates: GlobalMaterialLocalizations.delegates,
-            supportedLocales: [const Locale('ru')],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('en', ''), Locale('ru', '')],
             theme: theme,
             routerConfig: _router,
             // Добавляем ResponsiveWrapper в builder
@@ -49,11 +47,7 @@ class ClientApp extends StatelessWidget {
                   breakpoints: [
                     const Breakpoint(start: 0, end: 800, name: MOBILE),
                     const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                    const Breakpoint(
-                      start: 1921,
-                      end: double.infinity,
-                      name: '4K',
-                    ),
+                    const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
                   ],
                   child: child!,
                 ),

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huang_box_manager_web/pages/main/main_block.dart';
 import 'package:huang_box_manager_web/pages/main/main_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
 
-  static final List<Map<String, dynamic>> _menuItems = [
-    {'title': 'Dashboard', 'icon': Icons.dashboard},
+  static List<Map<String, dynamic>> _menuItems(BuildContext context) => [
+    {'title': AppLocalizations.of(context)!.myInferences, 'icon': Icons.dashboard},
     {'title': 'Profile', 'icon': Icons.person},
     {'title': 'Settings', 'icon': Icons.settings},
     {'title': 'Sign Out', 'icon': Icons.logout},
@@ -23,34 +24,28 @@ class Sidebar extends StatelessWidget {
           // Header
           Container(
             padding: const EdgeInsets.all(16),
-            child: const Text(
-              'Menu',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            child: const Text('Menu', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           // Menu items
           Expanded(
             child: ListView.builder(
-              itemCount: _menuItems.length,
+              itemCount: _menuItems(context).length,
               itemBuilder:
                   (context, index) => BlocBuilder<MainBloc, MainState>(
                     builder: (context, state) {
-                      final isSelected =
-                          state is MenuItemSelectedState &&
-                          state.selectedIndex == index;
+                      final isSelected = state is MenuItemSelectedState && state.selectedIndex == index;
                       return ListTile(
-                        leading: Icon(_menuItems[index]['icon']),
-                        title: Text(_menuItems[index]['title']),
+                        leading: Icon(_menuItems(context)[index]['icon']),
+                        title: Text(_menuItems(context)[index]['title']),
                         selected: isSelected,
                         onTap: () {
-                          if (index == _menuItems.length - 1) {
+                          if (index == _menuItems(context).length - 1) {
                             context.read<MainBloc>().signOut();
                           } else {
                             context.read<MainBloc>().selectMenuItem(index);
                           }
                           // Close the drawer if this is inside a Drawer (mobile)
-                          if (context.findAncestorWidgetOfExactType<Drawer>() !=
-                              null) {
+                          if (context.findAncestorWidgetOfExactType<Drawer>() != null) {
                             Navigator.pop(context);
                           }
                         },

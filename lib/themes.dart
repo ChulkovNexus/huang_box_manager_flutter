@@ -8,13 +8,25 @@ class ThemeCubit extends Cubit<ThemeData> {
     fontFamily: 'TTHoves',
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        textStyle: WidgetStateProperty.all<TextStyle>(
-          TextStyle(fontSize: 16.0, color: Colors.white),
-        ),
+        // Размер шрифта текста
+        textStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(fontSize: 16.0)),
+        // Цвет текста и иконок (белый)
+        foregroundColor: WidgetStateProperty.all(Colors.white),
+        // Цвет фона кнопки
+        backgroundColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.grey.shade400; // Цвет кнопки когда она отключена
+          }
+          return Colors.blue; // Цвет кнопки когда она активна
+        }),
+        // Форма кнопки (скругленные углы)
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         ),
-        backgroundColor: WidgetStateProperty.all(Colors.blue),
+        // Padding внутри кнопки
+        padding: WidgetStateProperty.all(
+          const EdgeInsets.all(16.0), // Padding 8.0 со всех сторон
+        ),
       ),
     ),
     colorScheme: const ColorScheme(
@@ -25,23 +37,19 @@ class ThemeCubit extends Cubit<ThemeData> {
       error: Colors.grey,
       onError: Colors.grey,
       primary: Colors.blue,
-      onSecondary: Colors.blue,
+      onSecondary: Colors.black,
       surface: Colors.white,
     ),
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: TextStyle(color: Colors.black),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.blue),
-      ),
+      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
     ),
-    scaffoldBackgroundColor: Colors.blue,
+    scaffoldBackgroundColor: Colors.grey[50],
     brightness: Brightness.light,
   );
 
   static final _darkTheme = ThemeData(
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      foregroundColor: Colors.black,
-    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(foregroundColor: Colors.black),
     brightness: Brightness.dark,
   );
 
