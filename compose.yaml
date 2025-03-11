@@ -1,0 +1,63 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      # Правило: слушаем по домену bober.app на входном https (443)
+      - "traefik.http.routers.frontend.rule=Host(`bober.app`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      # Говорим Traefik, что фронт внутри контейнера слушает на 80
+      #- "traefik.http.services.frontend.loadbalancer.server.port=80"
+    networks:
+      - frontend_network
+
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      # Под каким названием Traefik будет искать ваши контейнеры
+      - "--providers.docker.network=backend_network"
+
+      # Обычный HTTP (80) -> нужен для HTTP-01-челленджа Lets Encrypt
+      - "--entrypoints.web.address=:80"
+
+      # HTTPS на 443
+      - "--entrypoints.websecure.address=:443"
+
+      # -- Добавляем новый entrypoint 'backend' для 5050 --
+      - "--entrypoints.backend.address=:5050"
+
+      # Автоматическая выдача сертификатов Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=your-email@example.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+
+      - "--log.level=INFO"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      # Пробрасываем наружу порт 5050, чтобы он слушался из вне
+      - "5050:5050"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+    networks:
+      - frontend_network
+      - backend_network
+
+networks:
+  frontend_network:
+  backend_network:
+    external: true
+
+volumes:
+  letsencrypt:
