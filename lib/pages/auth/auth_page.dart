@@ -16,26 +16,43 @@ class AuthPage extends StatelessWidget {
           if (state is MainTransitionState) {
             context.go('/main');
           }
+
+          if (state.errorMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage!),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'Firebase Auth Example',
-              style: TextStyle(color: Colors.black),
-            ),
+            title: const Text('Firebase Auth Example', style: TextStyle(color: Colors.black)),
             backgroundColor: Colors.white,
             elevation: 0,
           ),
           body: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              if (state is UnauthenticatedState) {
-                return _buildUnauthenticatedView(context);
-              } else if (state is AuthenticatingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is AuthenticatedState) {
-                return _buildAuthenticatedView(context, state);
-              }
-              return const Center(child: CircularProgressIndicator());
+              return Stack(
+                children: [
+                  if (state is UnauthenticatedState)
+                    _buildUnauthenticatedView(context)
+                  else if (state is AuthenticatingState)
+                    const Center(child: CircularProgressIndicator())
+                  else if (state is AuthenticatedState)
+                    _buildAuthenticatedView(context, state),
+
+                  if (state.isLoading)
+                    Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const Center(
+                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ),
@@ -65,11 +82,7 @@ class AuthPage extends StatelessWidget {
               const SizedBox(width: 10),
               const Text(
                 'Sign in with Google',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -78,15 +91,10 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthenticatedView(
-    BuildContext context,
-    AuthenticatedState state,
-  ) {
-    final isSeller = ValueNotifier<bool>(
-      false,
-    ); // Используем ValueNotifier для состояния чекбокса
+  Widget _buildAuthenticatedView(BuildContext context, AuthenticatedState state) {
+    final isSeller = ValueNotifier<bool>(false);
 
-    if (state.isVerifying) {
+    if (state.progress) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -96,11 +104,7 @@ class AuthPage extends StatelessWidget {
         children: [
           Text(
             'Welcome, ${state.user.displayName ?? 'User'}',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           ValueListenableBuilder<bool>(
@@ -125,14 +129,9 @@ class AuthPage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               backgroundColor: Colors.green,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),
-            child: const Text(
-              'Edit User Data',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
+            child: const Text('Edit User Data', style: TextStyle(color: Colors.white, fontSize: 16)),
           ),
         ],
       ),

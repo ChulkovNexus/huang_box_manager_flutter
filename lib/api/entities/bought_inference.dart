@@ -1,39 +1,48 @@
 import 'package:equatable/equatable.dart';
 
-class Inference extends Equatable {
+class BoughtInference extends Equatable {
   final String id;
   final String userId;
-  final String userName;
   final String inferenceName;
   final double inputTokenPrice;
   final double outputTokenPrice;
   final int createdAt;
   final double? loadPercentage;
+  final String owner;
 
-  const Inference({
-    required this.id,
+  const BoughtInference({
+    required String id,
     required this.userId,
-    required this.userName,
     required this.inferenceName,
     required this.inputTokenPrice,
     required this.outputTokenPrice,
     required this.createdAt,
     required this.loadPercentage,
-  });
+    required this.owner,
+  }) : id = id;
 
-  factory Inference.fromJson(Map<String, dynamic> json) {
-    return Inference(
+  factory BoughtInference.fromJson(Map<String, dynamic> json) {
+    return BoughtInference(
       id: json['_id'] as String,
       userId: json['userId'] as String,
-      userName: json['userName'] as String,
+      owner: json['owner'] as String,
       inferenceName: json['inferenceName'] as String,
       inputTokenPrice: (json['inputTokenPrice'] as num).toDouble(),
       outputTokenPrice: (json['outputTokenPrice'] as num).toDouble(),
-      loadPercentage: (json['loadPercentage'] as num?)?.toDouble(),
       createdAt: json['createdAt'] as int,
+      loadPercentage: (json['loadPercentage'] as num?)?.toDouble(),
     );
   }
 
   @override
-  List<Object?> get props => [id, userId, userName, inferenceName, inputTokenPrice, outputTokenPrice, createdAt];
+  List<Object?> get props => [
+    id,
+    userId,
+    inferenceName,
+    inputTokenPrice,
+    outputTokenPrice,
+    createdAt,
+    loadPercentage,
+    owner,
+  ];
 }

@@ -2,18 +2,21 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthState extends Equatable {
-  const AuthState();
+  final String? errorMessage;
+  final bool isLoading;
+
+  const AuthState({this.errorMessage, this.isLoading = false});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [errorMessage, isLoading];
 }
 
 class UnauthenticatedState extends AuthState {
-  const UnauthenticatedState();
+  const UnauthenticatedState({super.errorMessage, super.isLoading});
 }
 
 class AuthenticatingState extends AuthState {
-  const AuthenticatingState();
+  const AuthenticatingState() : super(isLoading: true);
 }
 
 class MainTransitionState extends AuthState {
@@ -22,10 +25,10 @@ class MainTransitionState extends AuthState {
 
 class AuthenticatedState extends AuthState {
   final User user;
-  final bool isVerifying = false;
+  final bool progress;
 
-  const AuthenticatedState(this.user, {progress});
+  const AuthenticatedState(this.user, {required this.progress, super.errorMessage, super.isLoading});
 
   @override
-  List<Object?> get props => [user, isVerifying];
+  List<Object?> get props => [user, progress, errorMessage, isLoading];
 }

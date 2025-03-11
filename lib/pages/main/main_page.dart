@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:huang_box_manager_web/pages/main/bought_inferences/add_bought_inferences/add_bought_inferences_widget.dart';
+import 'package:huang_box_manager_web/pages/main/bought_inferences/bought_inferences_widget.dart';
 import 'package:huang_box_manager_web/pages/main/my_inferences/add_inference/new_inference_widget.dart';
 import 'package:huang_box_manager_web/pages/main/my_inferences/my_inferences_widget.dart';
 import 'package:huang_box_manager_web/pages/main/main_block.dart';
@@ -15,9 +17,11 @@ class MainPage extends StatelessWidget {
 
   final List<Widget> _contentWidgets = const [
     MyInferencesContent(),
+    BoughtInferencesContent(),
     ProfileContent(),
     SettingsContent(),
     AddInferenceContent(),
+    AddBoughtInferencesContent(),
   ];
 
   @override

@@ -15,9 +15,24 @@ abstract class RestService extends ChopperService {
   @Get(path: '/available-inferences')
   Future<Response> getAvailableInferences(@Header('Authorization') String authHeader);
 
+  @Post(path: '/get-inferences-for-buy')
+  Future<Response> getInferencesForBuy(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
+
+  @Post(path: '/buy-inference')
+  Future<Response> buyInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
+
+  @Post(path: '/delete-bought-inference')
+  Future<Response> deleteBoughtInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
+
+  @Post(path: '/delete-inference')
+  Future<Response> deleteInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
+
   @Post(path: '/create-inference')
   Future<Response> createInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
 
   @Get(path: '/user-inferences')
   Future<Response> getUserInferences(@Header('Authorization') String authHeader);
+
+  @Get(path: '/user-bought-inferences')
+  Future<Response> getUserBoughtInferences(@Header('Authorization') String authHeader);
 }

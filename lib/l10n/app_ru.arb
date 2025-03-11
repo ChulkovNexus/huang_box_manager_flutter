@@ -10,5 +10,20 @@
   "inference_input_price": "Цена за 1м входящих токенов",
   "inference_outout_price": "Цена за 1м исходящих токенов",
   "inference_created_at": "Создан",
-  "inferenceCreated": "Inference created"
+  "inferenceCreated": "Инференс создан",
+  "boughtInferences": "Купленные инференсы",
+  "profile": "Профиль",
+  "settings": "Настройки",
+  "signOut": "Выйти",
+  "menu": "Меню",
+  "load": "Загруженность",
+  "owner": "Владелец",
+  "add": "Добавить",
+  "addFeatureComingSoon": "Функция добавления будет реализована позже",
+  "empty_inferences_list": "Инференсы не найдены",
+  "actions": "Действия",
+  "confirmation": "Подтверждение",
+  "delete": "Удалить",
+  "cancel": "Отмена",
+  "deleteInferenceConfirmation": "Вы уверены, что хотите удалить инференс \"{inferenceName}\"?"
 }

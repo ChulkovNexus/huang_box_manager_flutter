@@ -21,11 +21,19 @@ class MyInferencesLoadingState extends MyInferencesState {
 // Состояние с данными
 class MyInferencesLoadedState extends MyInferencesState {
   final List<Inference> inferences;
+  final Map<String, bool> deletingInferenceIds;
 
-  const MyInferencesLoadedState(this.inferences);
+  const MyInferencesLoadedState(this.inferences, {this.deletingInferenceIds = const {}});
 
   @override
-  List<Object?> get props => [inferences];
+  List<Object?> get props => [inferences, deletingInferenceIds];
+
+  MyInferencesLoadedState copyWith({List<Inference>? inferences, Map<String, bool>? deletingInferenceIds}) {
+    return MyInferencesLoadedState(
+      inferences ?? this.inferences,
+      deletingInferenceIds: deletingInferenceIds ?? this.deletingInferenceIds,
+    );
+  }
 }
 
 // Состояние ошибки

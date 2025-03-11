@@ -21,25 +21,26 @@ class AuthBloc extends Cubit<AuthState> {
   }
 
   Future<void> _handleAuthenticatedUser(User user) async {
-    emit(const AuthenticatingState()); // Показываем прогресс при авторизации
+    emit(const AuthenticatingState());
     try {
-      emit(AuthenticatedState(user, progress: true)); // Начинаем верификацию
-      await verifyTokenOnServer(); // Автоматически выполняем верификацию
+      emit(AuthenticatedState(user, progress: true));
+      await verifyTokenOnServer();
     } catch (e) {
-      emit(
-        AuthenticatedState(user, progress: false),
-      ); // Ошибка, но остаёмся авторизованными
-      print('Error during authentication: $e');
+      emit(AuthenticatedState(user, progress: false, errorMessage: 'Ошибка при аутентификации: $e'));
+      debugPrint('Error during authentication: $e');
     }
   }
 
   Future<void> signInWithGoogle() async {
+    emit(const UnauthenticatedState(isLoading: true));
     try {
-      const clientId =
-          '68673754284-ikng2jrso2eut4behfp5grlklaimjdn6.apps.googleusercontent.com';
+      const clientId = '68673754284-ikng2jrso2eut4behfp5grlklaimjdn6.apps.googleusercontent.com';
       final googleUser = await GoogleSignIn(clientId: clientId).signIn();
 
-      if (googleUser == null) return;
+      if (googleUser == null) {
+        emit(const UnauthenticatedState(errorMessage: 'Вход был отменен пользователем'));
+        return;
+      }
 
       final googleAuth = await googleUser.authentication;
 
@@ -50,16 +51,19 @@ class AuthBloc extends Cubit<AuthState> {
 
       await _auth.signInWithCredential(credential);
     } catch (e) {
-      emit(const UnauthenticatedState());
+      emit(UnauthenticatedState(errorMessage: 'Ошибка входа через Google: ${e.toString()}'));
     }
   }
 
   Future<void> verifyTokenOnServer() async {
     if (state is AuthenticatedState) {
       final currentState = state as AuthenticatedState;
-      final token = await currentState.user.getIdToken();
-      debugPrint('IdToken: $token');
+      emit(AuthenticatedState(currentState.user, progress: true, isLoading: true));
+
       try {
+        final token = await currentState.user.getIdToken();
+        debugPrint('IdToken: $token');
+
         final response = await _restService.verifyToken('Bearer $token');
         if (response.isSuccessful) {
           debugPrint('Server response: ${response.bodyString}');
@@ -68,13 +72,22 @@ class AuthBloc extends Cubit<AuthState> {
           final error = response.error as Map<String, dynamic>?;
           final errorMessage = error?['error'] as String?;
           if (errorMessage == 'no_such_user') {
-            emit(AuthenticatedState(currentState.user, progress: false));
+            emit(
+              AuthenticatedState(currentState.user, progress: false, errorMessage: 'Пользователь не найден на сервере'),
+            );
           } else {
-            debugPrint('Other server error: ${errorMessage ?? response.error}');
+            emit(
+              AuthenticatedState(
+                currentState.user,
+                progress: false,
+                errorMessage: 'Ошибка сервера: ${errorMessage ?? response.error}',
+              ),
+            );
           }
         }
       } catch (e) {
         debugPrint('Error verifying token: $e');
+        emit(AuthenticatedState(currentState.user, progress: false, errorMessage: 'Ошибка при верификации токена: $e'));
       }
     }
   }
@@ -82,24 +95,31 @@ class AuthBloc extends Cubit<AuthState> {
   Future<void> editUserData(bool seller) async {
     if (state is AuthenticatedState) {
       final currentState = state as AuthenticatedState;
-      emit(AuthenticatedState(currentState.user, progress: true));
-      final token = await currentState.user.getIdToken();
+      emit(AuthenticatedState(currentState.user, progress: true, isLoading: true));
+
       try {
+        final token = await currentState.user.getIdToken();
         final response = await _restService.editUserData('Bearer $token', {
           'name': currentState.user.displayName,
           'email': currentState.user.email,
           'seller': seller,
         });
+
         if (response.isSuccessful) {
           debugPrint('User data updated: ${response.bodyString}');
           emit(MainTransitionState());
         } else {
-          debugPrint('Failed to update user data: ${response.error}');
-          emit(AuthenticatedState(currentState.user, progress: false));
+          emit(
+            AuthenticatedState(
+              currentState.user,
+              progress: false,
+              errorMessage: 'Ошибка обновления данных: ${response.error}',
+            ),
+          );
         }
       } catch (e) {
         debugPrint('Error editing user data: $e');
-        emit(AuthenticatedState(currentState.user, progress: false));
+        emit(AuthenticatedState(currentState.user, progress: false, errorMessage: 'Ошибка при обновлении данных: $e'));
       }
     }
   }

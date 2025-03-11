@@ -9,9 +9,10 @@ class Sidebar extends StatelessWidget {
 
   static List<Map<String, dynamic>> _menuItems(BuildContext context) => [
     {'title': AppLocalizations.of(context)!.myInferences, 'icon': Icons.dashboard},
-    {'title': 'Profile', 'icon': Icons.person},
-    {'title': 'Settings', 'icon': Icons.settings},
-    {'title': 'Sign Out', 'icon': Icons.logout},
+    {'title': AppLocalizations.of(context)!.boughtInferences, 'icon': Icons.shopping_cart},
+    {'title': AppLocalizations.of(context)!.profile, 'icon': Icons.person},
+    {'title': AppLocalizations.of(context)!.settings, 'icon': Icons.settings},
+    {'title': AppLocalizations.of(context)!.signOut, 'icon': Icons.logout},
   ];
 
   @override
@@ -24,7 +25,10 @@ class Sidebar extends StatelessWidget {
           // Header
           Container(
             padding: const EdgeInsets.all(16),
-            child: const Text('Menu', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text(
+              AppLocalizations.of(context)!.menu,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
           // Menu items
           Expanded(

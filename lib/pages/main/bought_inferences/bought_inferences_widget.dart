@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:huang_box_manager_web/pages/main/bought_inferences/bought_inferences_block.dart';
+import 'package:huang_box_manager_web/pages/main/bought_inferences/bought_inferences_state.dart';
 import 'package:huang_box_manager_web/pages/main/main_block.dart';
-import 'package:huang_box_manager_web/pages/main/my_inferences/my_inferences_block.dart';
-import 'package:huang_box_manager_web/pages/main/my_inferences/my_inferences_state.dart';
 import 'package:huang_box_manager_web/util/constants.dart';
 import 'package:intl/intl.dart';
 
-class MyInferencesContent extends StatelessWidget {
-  const MyInferencesContent({super.key});
+class BoughtInferencesContent extends StatelessWidget {
+  const BoughtInferencesContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MyInferencesBloc(),
-      child: BlocConsumer<MyInferencesBloc, MyInferencesState>(
+      create: (_) => BoughtInferencesBloc(),
+      child: BlocConsumer<BoughtInferencesBloc, BoughtInferencesState>(
         listener: (context, state) {
           // Показываем SnackBar при ошибке удаления инференса
-          if (state is MyInferencesErrorState && state.error.contains('Failed to delete inference')) {
+          if (state is BoughtInferencesErrorState && state.error.contains('Failed to delete inference')) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
@@ -38,17 +38,17 @@ class MyInferencesContent extends StatelessWidget {
             );
 
             // Возвращаемся к загрузке данных после показа ошибки
-            context.read<MyInferencesBloc>().reloadDataAfterError();
+            context.read<BoughtInferencesBloc>().reloadDataAfterError();
           }
         },
         builder: (context, state) {
           return Stack(
             children: [
               // Основное содержимое в зависимости от состояния
-              if (state is MyInferencesLoadingState)
+              if (state is BoughtInferencesLoadingState)
                 const Center(child: CircularProgressIndicator())
-              else if (state is MyInferencesLoadedState)
-                state.inferences.isEmpty
+              else if (state is BoughtInferencesLoadedState)
+                state.boughtInferences.isEmpty
                     ? Center(
                       child: Text(
                         AppLocalizations.of(context)!.empty_inferences_list,
@@ -64,10 +64,12 @@ class MyInferencesContent extends StatelessWidget {
                             DataColumn(label: Text(AppLocalizations.of(context)!.inference_input_price)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.inference_outout_price)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.inference_created_at)),
+                            DataColumn(label: Text(AppLocalizations.of(context)!.load)),
+                            DataColumn(label: Text(AppLocalizations.of(context)!.owner)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                           ],
                           rows:
-                              state.inferences.map((inference) {
+                              state.boughtInferences.map((inference) {
                                 // Проверяем, находится ли инференс в процессе удаления
                                 final isDeleting = state.deletingInferenceIds.containsKey(inference.id);
 
@@ -84,6 +86,8 @@ class MyInferencesContent extends StatelessWidget {
                                         ).format(DateTime.fromMillisecondsSinceEpoch(inference.createdAt)),
                                       ),
                                     ),
+                                    DataCell(Text('${inference.loadPercentage?.toStringAsFixed(2) ?? 0}%')),
+                                    DataCell(Text(inference.owner)),
                                     DataCell(
                                       isDeleting
                                           ? const SizedBox(
@@ -115,7 +119,7 @@ class MyInferencesContent extends StatelessWidget {
                                                         TextButton(
                                                           onPressed: () {
                                                             Navigator.of(dialogContext).pop();
-                                                            context.read<MyInferencesBloc>().deleteInference(
+                                                            context.read<BoughtInferencesBloc>().deleteBoughtInference(
                                                               inference.id,
                                                             );
                                                           },
@@ -150,10 +154,10 @@ class MyInferencesContent extends StatelessWidget {
                         ),
                       ),
                     )
-              else if (state is MyInferencesErrorState)
+              else if (state is BoughtInferencesErrorState)
                 Center(child: Text(state.error))
               else
-                Center(child: Text(AppLocalizations.of(context)!.myInferences)),
+                Center(child: Text(AppLocalizations.of(context)!.boughtInferences)),
 
               // Кнопка в правом нижнем углу
               Positioned(
@@ -161,9 +165,9 @@ class MyInferencesContent extends StatelessWidget {
                 right: 64,
                 child: ElevatedButton(
                   onPressed: () {
-                    context.read<MainBloc>().selectMenuItem(4);
+                    context.read<MainBloc>().selectMenuItem(5);
                   },
-                  child: Text(AppLocalizations.of(context)!.addInference, textAlign: TextAlign.center),
+                  child: Text(AppLocalizations.of(context)!.add, textAlign: TextAlign.center),
                 ),
               ),
             ],
