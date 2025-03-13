@@ -22,19 +22,26 @@ class BoughtInferencesLoadingState extends BoughtInferencesState {
 class BoughtInferencesLoadedState extends BoughtInferencesState {
   final List<BoughtInference> boughtInferences;
   final Map<String, bool> deletingInferenceIds;
+  final bool isWebSocketConnected;
 
-  const BoughtInferencesLoadedState(this.boughtInferences, {this.deletingInferenceIds = const {}});
+  const BoughtInferencesLoadedState(
+    this.boughtInferences, {
+    this.deletingInferenceIds = const {},
+    this.isWebSocketConnected = false,
+  });
 
   @override
-  List<Object?> get props => [boughtInferences, deletingInferenceIds];
+  List<Object?> get props => [boughtInferences, deletingInferenceIds, isWebSocketConnected];
 
   BoughtInferencesLoadedState copyWith({
     List<BoughtInference>? boughtInferences,
     Map<String, bool>? deletingInferenceIds,
+    bool? isWebSocketConnected,
   }) {
     return BoughtInferencesLoadedState(
       boughtInferences ?? this.boughtInferences,
       deletingInferenceIds: deletingInferenceIds ?? this.deletingInferenceIds,
+      isWebSocketConnected: isWebSocketConnected ?? this.isWebSocketConnected,
     );
   }
 }

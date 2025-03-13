@@ -83,7 +83,8 @@ class NewInferencesBloc extends Cubit<NewInferenceState> {
         });
 
         if (response.isSuccessful) {
-          emit(const InferenceSeccessfulCreated());
+          final token = response.body['token'] as String;
+          emit(InferenceSeccessfulCreated(token: token));
         } else {
           emit(NewInferenceErrorState('Failed to create inference: ${response.statusCode}'));
         }

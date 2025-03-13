@@ -9,6 +9,7 @@ class Inference extends Equatable {
   final double outputTokenPrice;
   final int createdAt;
   final double? loadPercentage;
+  final String token;
 
   const Inference({
     required this.id,
@@ -18,7 +19,8 @@ class Inference extends Equatable {
     required this.inputTokenPrice,
     required this.outputTokenPrice,
     required this.createdAt,
-    required this.loadPercentage,
+    required this.token,
+    this.loadPercentage,
   });
 
   factory Inference.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Inference extends Equatable {
       outputTokenPrice: (json['outputTokenPrice'] as num).toDouble(),
       loadPercentage: (json['loadPercentage'] as num?)?.toDouble(),
       createdAt: json['createdAt'] as int,
+      token: json['token'] as String,
     );
   }
 

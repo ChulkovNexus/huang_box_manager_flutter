@@ -4,6 +4,7 @@ import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:huang_box_manager_web/api/error_converter.dart';
 import 'package:huang_box_manager_web/api/rest_service.dart';
+import 'package:huang_box_manager_web/services/websocket_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -30,7 +31,13 @@ void setupDependencies() {
     ),
   );
 
-  getIt.registerLazySingleton<RestService>(
-    () => RestService.create(getIt<ChopperClient>()),
-  );
+  getIt.registerLazySingleton<RestService>(() => RestService.create(getIt<ChopperClient>()));
+
+  // Регистрируем сервис WebSocket и устанавливаем baseUrl
+  getIt.registerLazySingleton<WebSocketService>(() {
+    final wsService = WebSocketService();
+    // Берем baseUrl из конфигурации и устанавливаем в WebSocketService
+    wsService.setBaseUrl(baseUrl);
+    return wsService;
+  });
 }

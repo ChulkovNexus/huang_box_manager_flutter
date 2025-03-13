@@ -6,6 +6,8 @@ import 'package:huang_box_manager_web/pages/main/my_inferences/my_inferences_blo
 import 'package:huang_box_manager_web/pages/main/my_inferences/my_inferences_state.dart';
 import 'package:huang_box_manager_web/util/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 class MyInferencesContent extends StatelessWidget {
   const MyInferencesContent({super.key});
@@ -95,7 +97,15 @@ class MyInferencesContent extends StatelessWidget {
                                             icon: const Icon(Icons.more_vert),
                                             tooltip: AppLocalizations.of(context)!.actions,
                                             onSelected: (value) {
-                                              if (value == 'delete') {
+                                              if (value == 'copy') {
+                                                Clipboard.setData(ClipboardData(text: inference.token));
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: const Text('Token скопирован в буфер обмена'),
+                                                    duration: const Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              } else if (value == 'delete') {
                                                 // Показываем диалог подтверждения
                                                 showDialog(
                                                   context: context,
@@ -129,6 +139,18 @@ class MyInferencesContent extends StatelessWidget {
                                             },
                                             itemBuilder:
                                                 (BuildContext context) => [
+                                                  PopupMenuItem<String>(
+                                                    value: 'copy',
+                                                    child: ListTile(
+                                                      leading: const Icon(Icons.copy, color: Colors.blue),
+                                                      title: const Text(
+                                                        'Копировать токен',
+                                                        style: TextStyle(color: Colors.blue),
+                                                      ),
+                                                      contentPadding: EdgeInsets.zero,
+                                                      dense: true,
+                                                    ),
+                                                  ),
                                                   PopupMenuItem<String>(
                                                     value: 'delete',
                                                     child: ListTile(

@@ -44,6 +44,33 @@ class BoughtInferencesContent extends StatelessWidget {
         builder: (context, state) {
           return Stack(
             children: [
+              // Информация о статусе подключения к веб-сокету
+              if (state is BoughtInferencesLoadedState)
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: state.isWebSocketConnected ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        state.isWebSocketConnected
+                            ? AppLocalizations.of(context)!.connected
+                            : AppLocalizations.of(context)!.disconnected,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+
               // Основное содержимое в зависимости от состояния
               if (state is BoughtInferencesLoadingState)
                 const Center(child: CircularProgressIndicator())
@@ -66,6 +93,7 @@ class BoughtInferencesContent extends StatelessWidget {
                             DataColumn(label: Text(AppLocalizations.of(context)!.inference_created_at)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.load)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.owner)),
+                            DataColumn(label: Text(AppLocalizations.of(context)!.status)),
                             DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                           ],
                           rows:
@@ -88,6 +116,29 @@ class BoughtInferencesContent extends StatelessWidget {
                                     ),
                                     DataCell(Text('${inference.loadPercentage?.toStringAsFixed(2) ?? 0}%')),
                                     DataCell(Text(inference.owner)),
+                                    // Ячейка для статуса онлайн/офлайн
+                                    DataCell(
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: inference.isOnline ? Colors.green : Colors.red,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            inference.isOnline
+                                                ? AppLocalizations.of(context)!.online
+                                                : AppLocalizations.of(context)!.offline,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Ячейка с действиями
                                     DataCell(
                                       isDeleting
                                           ? const SizedBox(

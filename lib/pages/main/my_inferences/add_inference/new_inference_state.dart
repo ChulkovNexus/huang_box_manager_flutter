@@ -15,7 +15,11 @@ class NewInferenceLoadingState extends NewInferenceState {
 }
 
 class InferenceSeccessfulCreated extends NewInferenceState {
-  const InferenceSeccessfulCreated();
+  final String token;
+  const InferenceSeccessfulCreated({required this.token});
+
+  @override
+  List<Object?> get props => [token];
 }
 
 class NewInferenceLoadedState extends NewInferenceState {

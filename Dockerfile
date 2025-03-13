@@ -37,7 +37,7 @@ WORKDIR $APP
 # Run build: 1 - clean, 2 - pub get, 3 - build web
 RUN flutter clean
 RUN flutter pub get
-
+RUN flutter gen-l10n
 RUN flutter pub run build_runner build --delete-conflicting-outputs
 RUN flutter build web --target=lib/entry_points/prod_main.dart --release
 

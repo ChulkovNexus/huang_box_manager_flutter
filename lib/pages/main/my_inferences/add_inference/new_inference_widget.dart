@@ -5,6 +5,8 @@ import 'package:huang_box_manager_web/pages/main/main_block.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:huang_box_manager_web/pages/main/my_inferences/add_inference/new_inference_block.dart';
 import 'package:huang_box_manager_web/pages/main/my_inferences/add_inference/new_inference_state.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart';
 
 class AddInferenceContent extends StatelessWidget {
   const AddInferenceContent({super.key});
@@ -90,21 +92,7 @@ class _AddInferenceFormState extends State<AddInferenceForm> {
           } else if (state is NewInferenceErrorState) {
             return Center(child: Text('Error: ${state.message}'));
           } else if (state is InferenceSeccessfulCreated) {
-            return Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 80),
-                  Text(AppLocalizations.of(context)!.inferenceCreated, style: const TextStyle(color: Colors.blue)),
-                  const SizedBox(height: 180),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<MainBloc>().selectMenuItem(0);
-                    },
-                    child: Text(AppLocalizations.of(context)!.great, textAlign: TextAlign.center),
-                  ),
-                ],
-              ),
-            );
+            return _buildSuccessForm(context, state);
           }
           return const Center(child: Text('Initial State'));
         },
@@ -156,6 +144,34 @@ class _AddInferenceFormState extends State<AddInferenceForm> {
                 child: Text(AppLocalizations.of(context)!.create),
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSuccessForm(BuildContext context, InferenceSeccessfulCreated state) {
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(height: 80),
+          Text(AppLocalizations.of(context)!.inferenceCreated, style: const TextStyle(color: Colors.blue)),
+          const SizedBox(height: 20),
+          GestureDetector(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: state.token));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: const Text('Token скопирован в буфер обмена'), duration: const Duration(seconds: 2)),
+              );
+            },
+            child: Text(state.token, style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
+          ),
+          const SizedBox(height: 180),
+          ElevatedButton(
+            onPressed: () {
+              context.read<MainBloc>().selectMenuItem(0);
+            },
+            child: Text(AppLocalizations.of(context)!.great, textAlign: TextAlign.center),
           ),
         ],
       ),

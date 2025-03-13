@@ -26,4 +26,9 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "deleteInferenceConfirmation": "Are you sure you want to delete the inference \"{inferenceName}\"?",
+  "online": "Online",
+  "offline": "Offline",
+  "status": "Status",
+  "connected": "Connected",
+  "disconnected": "Disconnected"
 }

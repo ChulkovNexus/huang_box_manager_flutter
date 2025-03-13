@@ -25,5 +25,10 @@
   "confirmation": "Подтверждение",
   "delete": "Удалить",
   "cancel": "Отмена",
-  "deleteInferenceConfirmation": "Вы уверены, что хотите удалить инференс \"{inferenceName}\"?"
+  "deleteInferenceConfirmation": "Вы уверены, что хотите удалить инференс \"{inferenceName}\"?",
+  "online": "Онлайн",
+  "offline": "Офлайн",
+  "status": "Статус",
+  "connected": "Подключено",
+  "disconnected": "Отключено"
 }
