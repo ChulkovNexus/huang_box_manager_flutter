@@ -21,10 +21,10 @@ abstract class RestService extends ChopperService {
   @Post(path: '/buy-inference')
   Future<Response> buyInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
 
-  @Post(path: '/delete-bought-inference')
+  @Delete(path: '/delete-bought-inference')
   Future<Response> deleteBoughtInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
 
-  @Post(path: '/delete-inference')
+  @Delete(path: '/delete-inference')
   Future<Response> deleteInference(@Header('Authorization') String authHeader, @Body() Map<String, dynamic> body);
 
   @Post(path: '/create-inference')
