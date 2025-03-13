@@ -100,7 +100,6 @@ ios/*.ipa
 # Miscellaneous
 *.swp
 *.swo
-*.vscode/
 *.env
 .env.*
 !.env.example

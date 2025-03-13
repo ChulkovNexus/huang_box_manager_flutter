@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "DEV-Flavor",
+        "program": "lib/entry_points/dev_main.dart",
+        "request": "launch",
+        "type": "dart",
+        "deviceId": "chrome",
+        "args": ["--web-port=5000"]
+      },
+      {
+        "name": "DEV_remote-Flavor",
+        "program": "lib/entry_points/remote_dev_main.dart",
+        "request": "launch",
+        "type": "dart",
+        "deviceId": "chrome",
+        "args": ["--web-port=5000"]
+      },
+      {
+        "name": "RELEASE-Flavor",
+        "program": "lib/entry_points/dev_main.dart",
+        "request": "launch",
+        "type": "dart",
+        "deviceId": "chrome",
+        "args": ["--release", "--web-port=5000"]
+      }
+    ]
+  }
