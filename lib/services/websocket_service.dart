@@ -8,7 +8,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 /// Класс для работы с веб-сокетами
 class WebSocketService {
-  static const String _wsBaseUrl = 'ws://'; // Базовый URL для сокетов (дополняется в runtime)
   static const String _wsPath = '/auth-proxy';
 
   WebSocketChannel? _channel;
@@ -26,7 +25,7 @@ class WebSocketService {
 
   /// Установить базовый URL для веб-сокета
   void setBaseUrl(String baseUrl) {
-    _baseUrl = baseUrl.replaceAll('http://', '').replaceAll('https://', '');
+    _baseUrl = baseUrl;
     if (_isConnected) {
       disconnect();
       connect();
@@ -55,7 +54,7 @@ class WebSocketService {
         return;
       }
 
-      final uri = Uri.parse('$_wsBaseUrl$_baseUrl$_wsPath?token=$token');
+      final uri = Uri.parse('$_baseUrl$_wsPath?token=$token');
       _channel = WebSocketChannel.connect(uri);
       _isConnected = true;
 

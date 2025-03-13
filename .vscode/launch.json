@@ -19,7 +19,7 @@
       },
       {
         "name": "RELEASE-Flavor",
-        "program": "lib/entry_points/dev_main.dart",
+        "program": "lib/entry_points/prod_main.dart",
         "request": "launch",
         "type": "dart",
         "deviceId": "chrome",
