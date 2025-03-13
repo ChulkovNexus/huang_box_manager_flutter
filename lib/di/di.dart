@@ -10,6 +10,8 @@ final getIt = GetIt.instance;
 
 void setupDependencies() {
   String baseUrl = FlavorConfig.instance.variables["baseUrl"] as String;
+  String wsUrl = FlavorConfig.instance.variables["wsUrl"] as String;
+
   getIt.registerLazySingleton<ChopperClient>(
     () => ChopperClient(
       baseUrl: Uri.parse(baseUrl),
@@ -37,7 +39,7 @@ void setupDependencies() {
   getIt.registerLazySingleton<WebSocketService>(() {
     final wsService = WebSocketService();
     // Берем baseUrl из конфигурации и устанавливаем в WebSocketService
-    wsService.setBaseUrl(baseUrl);
+    wsService.setBaseUrl(wsUrl);
     return wsService;
   });
 }
