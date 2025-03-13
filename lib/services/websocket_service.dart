@@ -26,6 +26,7 @@ class WebSocketService {
   /// Установить базовый URL для веб-сокета
   void setBaseUrl(String baseUrl) {
     _baseUrl = baseUrl;
+    print("setBaseUrl" + _baseUrl);
     if (_isConnected) {
       disconnect();
       connect();
@@ -53,7 +54,7 @@ class WebSocketService {
         debugPrint('WebSocketService: Не удалось получить токен для веб-сокета');
         return;
       }
-
+      print("connect" + _baseUrl);
       final uri = Uri.parse('$_baseUrl$_wsPath?token=$token');
       _channel = WebSocketChannel.connect(uri);
       _isConnected = true;
